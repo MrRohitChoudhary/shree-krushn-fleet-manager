@@ -8,7 +8,7 @@ import { PageHeader } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { ReportHeader } from "@/components/brand";
+import { ReportBrandHeader } from "@/components/brand";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useAttendance, useDrivers, useSalaries } from "@/lib/queries";
 import { exportToExcel } from "@/lib/excel";
@@ -109,7 +109,7 @@ function SalaryPage() {
         </Button>
       </PageHeader>
 
-      <ReportHeader title={`Salary Statement — ${monthLabel(from)}`} />
+      <ReportBrandHeader title={`Salary Statement — ${monthLabel(from)}`} />
 
       <Card className="rounded-2xl">
         <CardContent className="overflow-x-auto p-0">
