@@ -16,6 +16,7 @@ import { Route as AuthenticatedAttendanceRouteImport } from './routes/_authentic
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDriversRouteImport } from './routes/_authenticated/drivers'
 import { Route as AuthenticatedFuelRouteImport } from './routes/_authenticated/fuel'
+import { Route as AuthenticatedMyRouteImport } from './routes/_authenticated/my'
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
 import { Route as AuthenticatedSalaryRouteImport } from './routes/_authenticated/salary'
 import { Route as AuthenticatedVehiclesRouteImport } from './routes/_authenticated/vehicles'
@@ -54,6 +55,11 @@ const AuthenticatedFuelRoute = AuthenticatedFuelRouteImport.update({
   path: '/fuel',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedMyRoute = AuthenticatedMyRouteImport.update({
+  id: '/my',
+  path: '/my',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedReportsRoute = AuthenticatedReportsRouteImport.update({
   id: '/reports',
   path: '/reports',
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/drivers': typeof AuthenticatedDriversRoute
   '/fuel': typeof AuthenticatedFuelRoute
+  '/my': typeof AuthenticatedMyRoute
   '/reports': typeof AuthenticatedReportsRoute
   '/salary': typeof AuthenticatedSalaryRoute
   '/vehicles': typeof AuthenticatedVehiclesRoute
@@ -88,6 +95,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/drivers': typeof AuthenticatedDriversRoute
   '/fuel': typeof AuthenticatedFuelRoute
+  '/my': typeof AuthenticatedMyRoute
   '/reports': typeof AuthenticatedReportsRoute
   '/salary': typeof AuthenticatedSalaryRoute
   '/vehicles': typeof AuthenticatedVehiclesRoute
@@ -101,6 +109,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/drivers': typeof AuthenticatedDriversRoute
   '/_authenticated/fuel': typeof AuthenticatedFuelRoute
+  '/_authenticated/my': typeof AuthenticatedMyRoute
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
   '/_authenticated/salary': typeof AuthenticatedSalaryRoute
   '/_authenticated/vehicles': typeof AuthenticatedVehiclesRoute
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/drivers'
     | '/fuel'
+    | '/my'
     | '/reports'
     | '/salary'
     | '/vehicles'
@@ -125,6 +135,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/drivers'
     | '/fuel'
+    | '/my'
     | '/reports'
     | '/salary'
     | '/vehicles'
@@ -137,6 +148,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/drivers'
     | '/_authenticated/fuel'
+    | '/_authenticated/my'
     | '/_authenticated/reports'
     | '/_authenticated/salary'
     | '/_authenticated/vehicles'
@@ -199,6 +211,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFuelRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/my': {
+      id: '/_authenticated/my'
+      path: '/my'
+      fullPath: '/my'
+      preLoaderRoute: typeof AuthenticatedMyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/reports': {
       id: '/_authenticated/reports'
       path: '/reports'
@@ -228,6 +247,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDriversRoute: typeof AuthenticatedDriversRoute
   AuthenticatedFuelRoute: typeof AuthenticatedFuelRoute
+  AuthenticatedMyRoute: typeof AuthenticatedMyRoute
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
   AuthenticatedSalaryRoute: typeof AuthenticatedSalaryRoute
   AuthenticatedVehiclesRoute: typeof AuthenticatedVehiclesRoute
@@ -238,6 +258,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDriversRoute: AuthenticatedDriversRoute,
   AuthenticatedFuelRoute: AuthenticatedFuelRoute,
+  AuthenticatedMyRoute: AuthenticatedMyRoute,
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,
   AuthenticatedSalaryRoute: AuthenticatedSalaryRoute,
   AuthenticatedVehiclesRoute: AuthenticatedVehiclesRoute,
