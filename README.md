@@ -552,16 +552,6 @@ Generate:
 
 The final application should feel like a professional fleet management tool built exclusively for Shree Krushn Enterprises, with its primary focus on driver management, vehicle management, fuel expense tracking, attendance, and salary management. It should be simple enough for daily use by the owner while providing drivers with a secure view of their own attendance, salary, assigned vehicle, and fuel records.
 
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/6f1c8683-a9f7-4309-a6b0-22ee5525b8c8).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
 ## Development
 
 Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
