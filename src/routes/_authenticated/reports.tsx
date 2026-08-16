@@ -54,6 +54,9 @@ function ReportsPage() {
   return (
     <div>
       <PageHeader title="Reports" description="Fuel expense report for the selected period">
+  return (
+    <div>
+      <PageHeader title="Reports" description="Fuel expense report for the selected period">
         <Input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="w-40" />
         <Input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="w-40" />
         <Button variant="secondary" onClick={() => window.print()}>
@@ -62,10 +65,35 @@ function ReportsPage() {
         <Button variant="secondary" onClick={() => exportToExcel(rows, "Report", `fuel-report-${from}`)}>
           <Download className="mr-1 h-4 w-4" /> Excel
         </Button>
+        <Button
+          variant="secondary"
+          disabled={push.isPending}
+          onClick={() =>
+            push.mutate(undefined, {
+              onSuccess: () => toast.success("Google Sheet updated"),
+              onError: (e: Error) => toast.error(e.message),
+            })
+          }
+        >
+          <Upload className="mr-1 h-4 w-4" /> {push.isPending ? "Syncing…" : "Sync to Sheet"}
+        </Button>
+        <Button
+          variant="secondary"
+          disabled={pull.isPending}
+          onClick={() =>
+            pull.mutate(undefined, {
+              onSuccess: () => {
+                toast.success("Imported from Google Sheet");
+                qc.invalidateQueries();
+              },
+              onError: (e: Error) => toast.error(e.message),
+            })
+          }
+        >
+          <RefreshCw className="mr-1 h-4 w-4" /> {pull.isPending ? "Importing…" : "Import from Sheet"}
+        </Button>
       </PageHeader>
 
-      <ReportBrandHeader
-        title="Fuel Expense Report"
         subtitle={`${formatDate(from)} to ${formatDate(to)}`}
       />
 
