@@ -95,8 +95,11 @@ function ReportsPage() {
         </Button>
       </PageHeader>
 
+      <ReportBrandHeader
+        title="Fuel Expense Report"
         subtitle={`${formatDate(from)} to ${formatDate(to)}`}
       />
+
 
       <Card className="rounded-2xl">
         <CardContent className="overflow-x-auto p-0">
