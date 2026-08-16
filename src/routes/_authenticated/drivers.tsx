@@ -6,6 +6,7 @@ import { Plus, Pencil, Trash2, Search, Download, KeyRound } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { createDriverLogin } from "@/lib/admin.functions";
 import { PageHeader } from "@/components/app-shell";
+import { useAutoSheetSync } from "@/hooks/use-sheet-sync";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -80,6 +81,7 @@ function DriversPage() {
   const drivers = useDrivers();
   const vehicles = useVehicles();
   const qc = useQueryClient();
+  const syncSheet = useAutoSheetSync();
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Driver | null>(null);
@@ -126,6 +128,7 @@ function DriversPage() {
       }
     },
     onSuccess: () => {
+      syncSheet();
       toast.success(editing ? "Driver updated" : "Driver added");
       qc.invalidateQueries({ queryKey: ["drivers"] });
       setOpen(false);
@@ -139,6 +142,7 @@ function DriversPage() {
       if (error) throw error;
     },
     onSuccess: () => {
+      syncSheet();
       toast.success("Driver deleted");
       qc.invalidateQueries({ queryKey: ["drivers"] });
     },
@@ -157,6 +161,7 @@ function DriversPage() {
       });
     },
     onSuccess: () => {
+      syncSheet();
       toast.success("Driver login created");
       qc.invalidateQueries({ queryKey: ["drivers"] });
       setLoginFor(null);

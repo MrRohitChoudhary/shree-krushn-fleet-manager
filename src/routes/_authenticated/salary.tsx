@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Download, Printer } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { PageHeader } from "@/components/app-shell";
+import { useAutoSheetSync } from "@/hooks/use-sheet-sync";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -39,6 +40,7 @@ function SalaryPage() {
   const attendance = useAttendance(from, to);
   const salaries = useSalaries(from);
   const qc = useQueryClient();
+  const syncSheet = useAutoSheetSync();
 
   const rows = useMemo(() => {
     return (drivers.data ?? []).map((d) => {
@@ -76,7 +78,10 @@ function SalaryPage() {
         .upsert({ ...p, salary_month: from }, { onConflict: "driver_id,salary_month" });
       if (error) throw error;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["salary"] }),
+    onSuccess: () => {
+      syncSheet();
+      qc.invalidateQueries({ queryKey: ["salary"] });
+    },
     onError: (e: Error) => toast.error(e.message),
   });
 

@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Plus, Pencil, Trash2, Search, Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { PageHeader } from "@/components/app-shell";
+import { useAutoSheetSync } from "@/hooks/use-sheet-sync";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -71,6 +72,7 @@ function VehiclesPage() {
   const vehicles = useVehicles();
   const drivers = useDrivers();
   const qc = useQueryClient();
+  const syncSheet = useAutoSheetSync();
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Vehicle | null>(null);
@@ -110,6 +112,7 @@ function VehiclesPage() {
       }
     },
     onSuccess: () => {
+      syncSheet();
       toast.success(editing ? "Vehicle updated" : "Vehicle added");
       qc.invalidateQueries({ queryKey: ["vehicles"] });
       setOpen(false);
@@ -123,6 +126,7 @@ function VehiclesPage() {
       if (error) throw error;
     },
     onSuccess: () => {
+      syncSheet();
       toast.success("Vehicle deleted");
       qc.invalidateQueries({ queryKey: ["vehicles"] });
     },

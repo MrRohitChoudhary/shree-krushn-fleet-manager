@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { PageHeader } from "@/components/app-shell";
+import { useAutoSheetSync } from "@/hooks/use-sheet-sync";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -40,6 +41,7 @@ function AttendancePage() {
   const drivers = useDrivers();
   const attendance = useAttendance(from, to);
   const qc = useQueryClient();
+  const syncSheet = useAutoSheetSync();
 
   const map = useMemo(() => {
     const m = new Map<string, string>();
@@ -54,7 +56,10 @@ function AttendancePage() {
         .upsert(p, { onConflict: "driver_id,attendance_date" });
       if (error) throw error;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["attendance"] }),
+    onSuccess: () => {
+      syncSheet();
+      qc.invalidateQueries({ queryKey: ["attendance"] });
+    },
     onError: (e: Error) => toast.error(e.message),
   });
 
