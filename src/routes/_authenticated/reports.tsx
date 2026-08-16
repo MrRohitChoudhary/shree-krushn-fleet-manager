@@ -1,7 +1,10 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Download, Printer } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { Download, Printer, RefreshCw, Upload } from "lucide-react";
 import { PageHeader } from "@/components/app-shell";
+import { useSheetPull, useSheetPush } from "@/hooks/use-sheet-sync";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -47,10 +50,14 @@ function ReportsPage() {
   );
 
   const totalCost = rows.reduce((t, r) => t + r.Cost, 0);
+  const push = useSheetPush();
+  const pull = useSheetPull();
+  const qc = useQueryClient();
 
   return (
     <div>
       <PageHeader title="Reports" description="Fuel expense report for the selected period">
+
         <Input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="w-40" />
         <Input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="w-40" />
         <Button variant="secondary" onClick={() => window.print()}>
@@ -59,12 +66,40 @@ function ReportsPage() {
         <Button variant="secondary" onClick={() => exportToExcel(rows, "Report", `fuel-report-${from}`)}>
           <Download className="mr-1 h-4 w-4" /> Excel
         </Button>
+        <Button
+          variant="secondary"
+          disabled={push.isPending}
+          onClick={() =>
+            push.mutate(undefined, {
+              onSuccess: () => toast.success("Google Sheet updated"),
+              onError: (e: Error) => toast.error(e.message),
+            })
+          }
+        >
+          <Upload className="mr-1 h-4 w-4" /> {push.isPending ? "Syncing…" : "Sync to Sheet"}
+        </Button>
+        <Button
+          variant="secondary"
+          disabled={pull.isPending}
+          onClick={() =>
+            pull.mutate(undefined, {
+              onSuccess: () => {
+                toast.success("Imported from Google Sheet");
+                qc.invalidateQueries();
+              },
+              onError: (e: Error) => toast.error(e.message),
+            })
+          }
+        >
+          <RefreshCw className="mr-1 h-4 w-4" /> {pull.isPending ? "Importing…" : "Import from Sheet"}
+        </Button>
       </PageHeader>
 
       <ReportBrandHeader
         title="Fuel Expense Report"
         subtitle={`${formatDate(from)} to ${formatDate(to)}`}
       />
+
 
       <Card className="rounded-2xl">
         <CardContent className="overflow-x-auto p-0">

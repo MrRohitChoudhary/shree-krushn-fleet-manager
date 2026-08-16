@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Plus, Trash2, Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { PageHeader } from "@/components/app-shell";
+import { useAutoSheetSync } from "@/hooks/use-sheet-sync";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -51,6 +52,7 @@ function FuelPage() {
   const vehicles = useVehicles();
   const drivers = useDrivers();
   const qc = useQueryClient();
+  const syncSheet = useAutoSheetSync();
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({
     entry_date: todayISO(),
@@ -95,6 +97,7 @@ function FuelPage() {
       if (error) throw error;
     },
     onSuccess: () => {
+      syncSheet();
       toast.success("Fuel entry added");
       qc.invalidateQueries({ queryKey: ["fuel"] });
       setOpen(false);
@@ -108,6 +111,7 @@ function FuelPage() {
       if (error) throw error;
     },
     onSuccess: () => {
+      syncSheet();
       toast.success("Entry deleted");
       qc.invalidateQueries({ queryKey: ["fuel"] });
     },
