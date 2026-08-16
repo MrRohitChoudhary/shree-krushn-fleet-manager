@@ -50,13 +50,14 @@ function ReportsPage() {
   );
 
   const totalCost = rows.reduce((t, r) => t + r.Cost, 0);
+  const push = useSheetPush();
+  const pull = useSheetPull();
+  const qc = useQueryClient();
 
   return (
     <div>
       <PageHeader title="Reports" description="Fuel expense report for the selected period">
-  return (
-    <div>
-      <PageHeader title="Reports" description="Fuel expense report for the selected period">
+
         <Input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="w-40" />
         <Input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="w-40" />
         <Button variant="secondary" onClick={() => window.print()}>
